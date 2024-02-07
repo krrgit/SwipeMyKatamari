@@ -16,6 +16,8 @@ public class Prop : MonoBehaviour
 
     [SerializeField] private ColliderType colliderType;
     [SerializeField] private string propName = "prop";
+    
+    private Collider propCollider;
     private Rigidbody rb;
 
     private static float UNIT_SPHERE_VOL = 4.19f;
@@ -26,11 +28,17 @@ public class Prop : MonoBehaviour
         get { return propName; }
     }
 
+    public void ToggleCollider(bool state)
+    {
+        propCollider.enabled = state;
+    }
+
     public void AddRigidbody()
     {
         if (!isRigidbody || hasRigidbody) return;
 
         rb = gameObject.AddComponent<Rigidbody>();
+        rb.mass = volume;
         hasRigidbody = true;
     }
 
@@ -45,9 +53,15 @@ public class Prop : MonoBehaviour
     {
         get { return volume; }
     }
+
+    public float Radius
+    {
+        get { return Mathf.Pow(volume / 1.33f, 0.33f);  }
+    }
     
     void Start()
     {
+        propCollider = GetComponent<Collider>();
         // Get the mesh filter component attached to the game object
         MeshFilter meshFilter = GetComponent<MeshFilter>();
 

@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2152756715026687019}
   - component: {fileID: 1957923205753867417}
   - component: {fileID: 2598108576777870506}
-  - component: {fileID: -2041014605584693033}
   - component: {fileID: 3516592505213822382}
+  - component: {fileID: -2041014605584693033}
   m_Layer: 7
   m_Name: Nail
   m_TagString: Prop
@@ -85,6 +85,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &3516592505213822382
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5415844505593134007}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: eb8cf2d2e55559941bc470c5cee5be6c, type: 2}
 --- !u!114 &-2041014605584693033
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,17 +116,3 @@ MonoBehaviour:
   hasRigidbody: 0
   colliderType: 1
   propName: Nail
---- !u!64 &3516592505213822382
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5415844505593134007}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: eb8cf2d2e55559941bc470c5cee5be6c, type: 2}

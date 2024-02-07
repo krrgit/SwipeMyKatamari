@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 1438599162827361444}
   - component: {fileID: 9114568886283771277}
   - component: {fileID: 5721105082339790182}
-  - component: {fileID: -7065344135165247527}
   - component: {fileID: 6005787273028404689}
+  - component: {fileID: -7065344135165247527}
   m_Layer: 7
   m_Name: Rice Grain
   m_TagString: Prop
@@ -85,6 +85,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6005787273028404689
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868929989430862613}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 4738702eae4cfd54fafccb8b29cf4ed2, type: 2}
 --- !u!114 &-7065344135165247527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102,17 +116,3 @@ MonoBehaviour:
   hasRigidbody: 0
   colliderType: 1
   propName: Rice Grain
---- !u!64 &6005787273028404689
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 868929989430862613}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 4738702eae4cfd54fafccb8b29cf4ed2, type: 2}

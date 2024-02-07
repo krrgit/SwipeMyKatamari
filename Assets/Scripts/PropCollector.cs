@@ -16,7 +16,7 @@ public class PropCollector : Singleton<PropCollector>
     [Header("Absorb Values")] 
     [SerializeField]private float absorbDur = 1f;
 
-    public delegate void CollectProp(float newRadius, string propName);
+    public delegate void CollectProp(float newRadius, Prop prop);
 
     public CollectProp myCollectProp;
 
@@ -79,10 +79,7 @@ public class PropCollector : Singleton<PropCollector>
     private void OnCollisionEnter(Collision collision)
     {
         if (!collision.gameObject.CompareTag("Prop")) return;
-        
 
-        // print("Touched prop");
-        
         var prop = collision.gameObject.GetComponent<Prop>();
         if (prop)
         {
@@ -101,30 +98,34 @@ public class PropCollector : Singleton<PropCollector>
 
     void AddPropToCollection(Prop prop, Collider myCollider)
     {
-        prop.transform.parent = collectionParent;
+        prop.transform.parent = transform;
         prop.gameObject.layer = ballLayer;
         prop.DestroyRigidbody();
 
-        StartCoroutine(IAbsorbObject(prop.transform));
+        StartCoroutine(IAbsorbObject(prop));
         UpdateVolume(prop.Volume);
                 
-        myCollectProp?.Invoke(radius, prop.PropName);
+        myCollectProp?.Invoke(radius, prop);
         SoundManager.Instance.PlayClip("PickupProp");
     }
 
-    IEnumerator IAbsorbObject(Transform prop)
+    IEnumerator IAbsorbObject(Prop prop)
     {
-        float delta = Mathf.Max(prop.localPosition.magnitude - radius * 0.5f,0) * (Time.deltaTime / absorbDur);
-        float tempMag = prop.localPosition.magnitude;
+        // prop.ToggleCollider(false);
+
+        float delta = Mathf.Max(prop.transform.localPosition.magnitude - radius * 0.5f,0) * (Time.deltaTime / absorbDur);
+        float tempMag = prop.transform.localPosition.magnitude;
         float duration = 0;
         while (tempMag > radius * 0.5f)
         {
             tempMag -= delta;
-            prop.localPosition = tempMag * prop.localPosition.normalized;
+            prop.transform.localPosition = tempMag * prop.transform.localPosition.normalized;
             duration += Time.deltaTime;
             
             yield return new WaitForEndOfFrame();
         }
+        // prop.ToggleCollider(true);
+
         // print("finish absorb. r: " +radius + " | lp: " + prop.localPosition.magnitude + " | dur: " + duration);   
     }
 }

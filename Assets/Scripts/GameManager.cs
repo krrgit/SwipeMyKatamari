@@ -32,14 +32,14 @@ public class GameManager : MonoBehaviour
         propCollector.myCollectProp -= GameStateCheck;
     }
     
-    void GameStateCheck(float newRadius, string propName)
+    void GameStateCheck(float newRadius, Prop prop)
     {
         if (gameRunning && scenePropsParent.childCount == 0)
         {
             gameRunning = false;
             uiManager.ShowEndGameUI();
         }
-        uiManager.UpdateUIText(newRadius, propName, scenePropsParent.childCount);
+        uiManager.UpdateUIText(newRadius, prop.PropName, scenePropsParent.childCount);
     }
 
     void Start()

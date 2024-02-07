@@ -29,11 +29,11 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        UpdateCameraDist(startRadius, "");
+        UpdateCameraDist(startRadius, null);
         idealPosition = transform.localPosition;
     }
 
-    void UpdateCameraDist(float newRadius, string propName)
+    void UpdateCameraDist(float newRadius, Prop prop)
     {
         Vector3 newLocalPos = transform.localPosition;
         scaleRatio = newRadius / startRadius;

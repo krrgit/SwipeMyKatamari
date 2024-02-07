@@ -11,11 +11,11 @@ GameObject:
   - component: {fileID: 6471356324929842760}
   - component: {fileID: 1935000495386147424}
   - component: {fileID: 7048238335619671280}
-  - component: {fileID: 33603885835237850}
   - component: {fileID: 4431584092978074660}
-  m_Layer: 0
+  - component: {fileID: 33603885835237850}
+  m_Layer: 7
   m_Name: Mosquito
-  m_TagString: Untagged
+  m_TagString: Prop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -87,6 +87,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4431584092978074660
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5771092231068679197}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: fe8cb01f970737d4096368daa5a1e4dd, type: 2}
 --- !u!114 &33603885835237850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -104,17 +118,3 @@ MonoBehaviour:
   hasRigidbody: 0
   colliderType: 1
   propName: Mosquito
---- !u!64 &4431584092978074660
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5771092231068679197}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: fe8cb01f970737d4096368daa5a1e4dd, type: 2}

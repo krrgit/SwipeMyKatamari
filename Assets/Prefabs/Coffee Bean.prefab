@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3266183192047305451}
   - component: {fileID: 6695241570498364371}
   - component: {fileID: 8474009656763186464}
-  - component: {fileID: 6365494343235359557}
   - component: {fileID: 6837695035801846308}
+  - component: {fileID: 6365494343235359557}
   m_Layer: 7
   m_Name: Coffee Bean
   m_TagString: Prop
@@ -86,6 +86,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6837695035801846308
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8788792139302841831}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 77594e5dfa5d3314880f8ef352719ed8, type: 2}
 --- !u!114 &6365494343235359557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -103,17 +117,3 @@ MonoBehaviour:
   hasRigidbody: 0
   colliderType: 1
   propName: Coffee Bean
---- !u!64 &6837695035801846308
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8788792139302841831}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 77594e5dfa5d3314880f8ef352719ed8, type: 2}
