@@ -20,6 +20,7 @@ public class TouchManager : Singleton<TouchManager>
     
     // Bottom Touch
     [SerializeField] private float bottomTouchThreshold = 350;
+    [SerializeField] private bool bottomTouchHold;
     
     // Tap
     [SerializeField] private float tapMinDist = 0.01f;
@@ -36,8 +37,13 @@ public class TouchManager : Singleton<TouchManager>
     public event EndTouchEvent OnEndTouch;
     public delegate void SwipeHoldEvent(Vector3 holdDirection);
     public event SwipeHoldEvent OnSwipeHoldTouch;
-    public delegate void BottomTouchEvent();
-    public event BottomTouchEvent OnBottomTouch;
+    
+    public delegate void BottomStartTouchEvent();
+    public event BottomStartTouchEvent OnBottomStartTouch;
+    public delegate void BottomEndTouchEvent();
+    public event BottomEndTouchEvent OnBottomEndTouch;
+    public delegate void BottomCancelTouchEvent();
+    public event BottomCancelTouchEvent OnBottomCancelTouch;
     
     private void Awake()
     {
@@ -45,7 +51,6 @@ public class TouchManager : Singleton<TouchManager>
         cameraMain = Camera.main;
         touchPressAction = playerInput.actions["TouchPress"];
         touchPositionAction = playerInput.actions["TouchPosition"];
-
     }
 
     private void OnEnable()
@@ -78,6 +83,12 @@ public class TouchManager : Singleton<TouchManager>
         // OnHoldTouch?.Invoke(worldPos, Time.time);
 
         StartCoroutine(HoldTouch());
+
+        if (touchPos.y <= bottomTouchThreshold)
+        {
+            OnBottomStartTouch?.Invoke();
+            bottomTouchHold = true;
+        }
     }
 
     void PrimaryEndTouch(InputAction.CallbackContext context)
@@ -87,15 +98,10 @@ public class TouchManager : Singleton<TouchManager>
         Vector3 worldPos = cameraMain.ScreenToWorldPoint(touchPos)-cameraMain.transform.position;
         OnEndTouch?.Invoke(touchPos, Time.time);
 
-        if (touchPos.y <= bottomTouchThreshold)
+        if (bottomTouchHold)
         {
-            float tapDist = Vector3.Distance(touchPos, startTouchPosition);
-            float tapDur = Time.time - startTouchTime;
-            print("tap | dist: " + tapDist + " | dur: " + tapDur);
-            if (tapDist < tapMinDist && tapDur < tapMinDuration)
-            {
-                OnBottomTouch?.Invoke();
-            }
+            OnBottomEndTouch?.Invoke();
+            bottomTouchHold = false;
         }
         
     }
@@ -128,6 +134,19 @@ public class TouchManager : Singleton<TouchManager>
             {
                 // print("swipe hold");
                 OnSwipeHoldTouch?.Invoke(touchPos - holdStartPosRaw);
+            }
+            
+            
+            // Cancel Jump if hold tap too far
+            if (bottomTouchHold)
+            {
+                float tapDist = Vector3.Distance(touchPos, startTouchPosition);
+                if (dragActive || tapDist < tapMinDist || touchPos.y > bottomTouchThreshold)
+                {
+                    print("Cancel Bottom Hold");
+                    OnBottomCancelTouch?.Invoke();
+                    bottomTouchHold = false;
+                }
             }
 
             yield return new WaitForEndOfFrame();

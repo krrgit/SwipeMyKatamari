@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         timer = timeLimit;
+        uiManager.SetPropsMaxValue(scenePropsParent.childCount);
         uiManager.UpdateUIText(1, "", scenePropsParent.childCount);
         uiManager.UpdateTime(timer);
     }

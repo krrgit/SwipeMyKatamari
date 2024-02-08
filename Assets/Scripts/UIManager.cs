@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -9,6 +11,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private TMP_Text timeLeft;
     [SerializeField] private TMP_Text lastPropCollected;
     [SerializeField] private TMP_Text propsLeft;
+    [SerializeField] private Slider propsLeftSlider;
     [SerializeField] private GameObject endGameCanvas;
     [SerializeField] private GameObject gameOverCanvas;
 
@@ -21,6 +24,12 @@ public class UIManager : Singleton<UIManager>
     {
         gameOverCanvas.SetActive(true);
     }
+
+    public void SetPropsMaxValue(int maxValue)
+    {
+        propsLeftSlider.maxValue = maxValue;
+        propsLeftSlider.value = maxValue;
+    }
     
 
 
@@ -29,6 +38,7 @@ public class UIManager : Singleton<UIManager>
         size.text = newRadius.ToString("F2") + " cm";   
         lastPropCollected.text = propName;
         propsLeft.text = propCount + " left";
+        propsLeftSlider.value = propCount;
     }
 
     public void UpdateTime(float newTime)

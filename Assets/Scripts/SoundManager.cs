@@ -41,5 +41,17 @@ public class SoundManager : MonoBehaviour {
             }
         }
     }
+    
+    public void StopClip(string name)
+    {
+        name = name.ToLower();
+        for (int i = 0; i < sources.Length; ++i)
+        {
+            if (sources[i].gameObject.name == name)
+            {
+                sources[i].Stop();
+            }
+        }
+    }
 
 }

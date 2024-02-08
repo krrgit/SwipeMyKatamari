@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 
 public class SpawnRandomObject : MonoBehaviour
@@ -68,3 +69,5 @@ public class SpawnRandomObject : MonoBehaviour
         return colliders.Length > 0;
     }
 }
+
+#endif

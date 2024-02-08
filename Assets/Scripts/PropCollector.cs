@@ -12,6 +12,7 @@ public class PropCollector : Singleton<PropCollector>
     [SerializeField] private Transform collectionParent;
     [SerializeField] private Transform managerParent;
     [SerializeField] private Collider sphereCollider;
+    [SerializeField] private float impulseSoundThreshold = 10; // threshold to play hit sound
 
     [Header("Absorb Values")] 
     [SerializeField]private float absorbDur = 1f;
@@ -78,7 +79,15 @@ public class PropCollector : Singleton<PropCollector>
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.CompareTag("Prop")) return;
+        if (!collision.gameObject.CompareTag("Prop"))
+        {
+            print("coll impuls: " + collision.impulse.magnitude);
+            if (collision.impulse.magnitude > impulseSoundThreshold)
+            {
+                SoundManager.Instance.PlayClip("Hit");
+            }
+            return;
+        }
 
         var prop = collision.gameObject.GetComponent<Prop>();
         if (prop)
@@ -98,8 +107,8 @@ public class PropCollector : Singleton<PropCollector>
 
     void AddPropToCollection(Prop prop, Collider myCollider)
     {
-        prop.transform.parent = transform;
         prop.gameObject.layer = ballLayer;
+        prop.transform.parent = transform;
         prop.DestroyRigidbody();
 
         StartCoroutine(IAbsorbObject(prop));

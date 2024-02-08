@@ -12,14 +12,14 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float minJump = 5;
     [SerializeField] private float maxJump = 15;
     [SerializeField] private float jumpChargeMaxTime = 5;
-    
-    [SerializeField] private float lerpSpeed = 10;
-
-    [SerializeField] private Vector3 startPos;
+    [SerializeField] private AnimateJumpParticles jumpParticles;
     private Vector2 touchDir;
 
     private Vector3 moveDir;
     private bool moveActive;
+
+    private bool isJumpHold;
+    private Coroutine jumpHold;
     
     private Camera cameraMain;
     private TouchManager touchManager;
@@ -32,28 +32,28 @@ public class PlayerMove : MonoBehaviour
 
     private void OnEnable()
     {
-        touchManager.OnStartTouch += StartMove;
         touchManager.OnDragTouch += MoveInput;
         touchManager.OnEndTouch += StopMove;
-        touchManager.OnBottomTouch += Jump;
+
+        touchManager.OnBottomStartTouch += StartJumpHold;
+        touchManager.OnBottomEndTouch += ReleaseJumpHold;
+        touchManager.OnBottomCancelTouch += CancelJumpHold;
     }
     private void OnDisable()
     {
-        touchManager.OnStartTouch -= StartMove;
         touchManager.OnDragTouch -= MoveInput;
         touchManager.OnEndTouch -= StopMove;
-        touchManager.OnBottomTouch -= Jump;
+        
+        touchManager.OnBottomStartTouch -= StartJumpHold;
+        touchManager.OnBottomEndTouch -= ReleaseJumpHold;
+        touchManager.OnBottomCancelTouch -= CancelJumpHold;
     }
 
     void Start()
     {
         rb.maxAngularVelocity = maxAngularVelocity;
     }
-
-    void StartMove(Vector3 touchPosition, float time)
-    {
-        startPos = touchPosition;
-    }
+    
 
     void MoveInput(Vector3 holdDirection)
     {
@@ -63,16 +63,6 @@ public class PlayerMove : MonoBehaviour
         moveActive = true;
     }
 
-    // void Move(Vector3 worldPosition, float time)
-    // {
-    //     Vector3 projectPosition = (worldPosition - cameraMain.transform.position).normalized * camDist;
-    //     projectPosition.z = camDist;
-    //     Vector3 finalPos = cameraMain.transform.position + projectPosition;
-    //     finalPos.y = rb.position.y;
-    //     finalPos.z = rb.position.z;
-    //
-    //     rb.position = Vector3.Lerp(rb.position, finalPos, lerpSpeed* Time.deltaTime);
-    // }
 
     // Update is called once per frame
     void FixedUpdate()
@@ -94,9 +84,56 @@ public class PlayerMove : MonoBehaviour
     }
 
 
-    void Jump()
+    void ReleaseJumpHold()
     {
-        rb.AddForce(Vector3.up * minJump, ForceMode.Impulse);
+        isJumpHold = false;
+    }
+
+    void CancelJumpHold()
+    {
+        StopCoroutine(jumpHold);
+        jumpParticles.StopAnim();
+        SoundManager.Instance.StopClip("HoldJump");
+        SoundManager.Instance.StopClip("ChargeJump");
+    }
+
+    void StartJumpHold()
+    {
+        jumpHold = StartCoroutine(IJumpHold());
+        jumpParticles.StartAnim(jumpChargeMaxTime);
+        
+    }
+
+    IEnumerator IJumpHold()
+    {
+        SoundManager.Instance.PlayClip("ChargeJump");
+        isJumpHold = true;
+        float timer = jumpChargeMaxTime;
+        while (timer > 0 && isJumpHold)
+        {
+            timer -= Time.deltaTime;
+            timer = timer < 0 ? 0 : timer;
+            yield return new WaitForEndOfFrame();
+        }
+        float ratio = (1f - timer) / jumpChargeMaxTime;
+        float jumpPower = minJump + (ratio * (maxJump - minJump));
+        
+        SoundManager.Instance.PlayClip("HoldJump");
+        
+        // Only jump when tap is released
+        while (isJumpHold)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        
+        // Jump
+        jumpParticles.StopAnim();
+        rb.AddForce(jumpPower *Vector3.up, ForceMode.Impulse);
+        isJumpHold = false;
+
+        SoundManager.Instance.StopClip("ChargeJump");
+        SoundManager.Instance.StopClip("HoldJump");
+        SoundManager.Instance.PlayClip("Jump");
     }
 
     void KeyboardControls()
