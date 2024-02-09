@@ -12,32 +12,49 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float timer;
     [SerializeField] private float timeLimit = 180;
     [SerializeField] private bool gameRunning = true;
+    [SerializeField] private int amountToWin;
+    [SerializeField] private bool finished;
     
     [SerializeField]private Transform scenePropsParent;
+    
     private PropCollector propCollector;
     private UIManager uiManager;
+    private TouchManager touchManager;
     
     private void Awake()
     {
         propCollector = PropCollector.Instance;
         uiManager = UIManager.Instance;
+        touchManager = TouchManager.Instance;
     }
 
     private void OnEnable()
     {
         propCollector.myCollectProp += GameStateCheck;
+        touchManager.OnStartTouch += StartGame;
     }
     private void OnDisable()
     {
         propCollector.myCollectProp -= GameStateCheck;
+        touchManager.OnStartTouch -= StartGame;
+    }
+
+    void StartGame(Vector3 postition, float time)
+    {
+        if (!gameRunning)
+        {
+            gameRunning = true;
+            touchManager.OnStartTouch -= StartGame;
+        }
     }
     
     void GameStateCheck(float newRadius, Prop prop)
     {
-        if (gameRunning && scenePropsParent.childCount == 0)
+        if (!finished && gameRunning && scenePropsParent.childCount <= amountToWin)
         {
-            gameRunning = false;
+            finished = true;
             uiManager.ShowEndGameUI();
+            SoundManager.Instance.PlayClip("Fanfare");
         }
         uiManager.UpdateUIText(newRadius, prop.PropName, scenePropsParent.childCount);
     }
@@ -45,6 +62,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         timer = timeLimit;
+        amountToWin = scenePropsParent.childCount / 2;
         uiManager.SetPropsMaxValue(scenePropsParent.childCount);
         uiManager.UpdateUIText(1, "", scenePropsParent.childCount);
         uiManager.UpdateTime(timer);

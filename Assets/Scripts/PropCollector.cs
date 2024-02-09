@@ -17,6 +17,7 @@ public class PropCollector : Singleton<PropCollector>
     [Header("Absorb Values")] 
     [SerializeField]private float absorbDur = 1f;
 
+    [SerializeField] private Transform GroundCheck;
     public delegate void CollectProp(float newRadius, Prop prop);
 
     public CollectProp myCollectProp;
@@ -95,6 +96,7 @@ public class PropCollector : Singleton<PropCollector>
             if (prop.Volume <= volume * maxPercCollectable)
             {
                 AddPropToCollection(prop, collision.GetContact(0).thisCollider);
+                UpdateGroundCheck();
                 print("collect: " + prop.Volume + " | max: " + (volume * maxPercCollectable));
             }
             else
@@ -103,6 +105,13 @@ public class PropCollector : Singleton<PropCollector>
             }
             
         }
+    }
+
+    void UpdateGroundCheck()
+    {
+        Vector3 groundCheckPos = GroundCheck.localPosition;
+        groundCheckPos.y = -radius;
+        GroundCheck.localPosition = groundCheckPos;
     }
 
     void AddPropToCollection(Prop prop, Collider myCollider)

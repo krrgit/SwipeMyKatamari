@@ -24,7 +24,7 @@ public class TouchManager : Singleton<TouchManager>
     
     // Tap
     [SerializeField] private float tapMinDist = 0.01f;
-    [SerializeField] private float tapMinDuration = 0.3f;
+    // [SerializeField] private float tapMinDuration = 0.3f;
 
     private Vector3 startTouchPosition;
     private float startTouchTime;

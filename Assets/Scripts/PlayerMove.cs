@@ -9,10 +9,17 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float maxVelocity;
     [SerializeField] private float maxAngularVelocity = 25f;
     [SerializeField] private Rigidbody rb;
+    [Header("Jump Variables")]
     [SerializeField] private float minJump = 5;
     [SerializeField] private float maxJump = 15;
     [SerializeField] private float jumpChargeMaxTime = 5;
     [SerializeField] private AnimateJumpParticles jumpParticles;
+    [SerializeField] private bool isGrounded;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundDistance = 0.4f;
+    [SerializeField] private LayerMask groundMask;
+    
+    
     private Vector2 touchDir;
 
     private Vector3 moveDir;
@@ -63,6 +70,11 @@ public class PlayerMove : MonoBehaviour
         moveActive = true;
     }
 
+    void Update()
+    {
+        GroundCheck();
+    }
+
 
     // Update is called once per frame
     void FixedUpdate()
@@ -91,7 +103,7 @@ public class PlayerMove : MonoBehaviour
 
     void CancelJumpHold()
     {
-        StopCoroutine(jumpHold);
+        if (jumpHold != null)StopCoroutine(jumpHold);
         jumpParticles.StopAnim();
         SoundManager.Instance.StopClip("HoldJump");
         SoundManager.Instance.StopClip("ChargeJump");
@@ -99,9 +111,9 @@ public class PlayerMove : MonoBehaviour
 
     void StartJumpHold()
     {
+        if (!isGrounded) return;
         jumpHold = StartCoroutine(IJumpHold());
         jumpParticles.StartAnim(jumpChargeMaxTime);
-        
     }
 
     IEnumerator IJumpHold()
@@ -151,6 +163,12 @@ public class PlayerMove : MonoBehaviour
 
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxVelocity);
     }
+    
+    void GroundCheck()
+    {
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+    }
+    
     
     
 }

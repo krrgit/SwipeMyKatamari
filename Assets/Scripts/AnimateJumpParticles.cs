@@ -8,7 +8,7 @@ public class AnimateJumpParticles : MonoBehaviour
 
     [SerializeField] private float endEmitterSize = 1;
 
-    [SerializeField] private ParticleSystem particleSystem;
+    [SerializeField] private ParticleSystem ps;
 
 
     public void StartAnim(float duration)
@@ -18,11 +18,11 @@ public class AnimateJumpParticles : MonoBehaviour
 
     IEnumerator IAnimate(float duration)
     {
-        var shape = particleSystem.shape;
+        var shape = ps.shape;
         float sizeDelta = startEmitterSize - endEmitterSize;
         shape.radius = startEmitterSize;
         
-        particleSystem.Play();
+        ps.Play();
         float timer = duration;
 
         while (timer > 0)
@@ -37,7 +37,7 @@ public class AnimateJumpParticles : MonoBehaviour
 
     public void StopAnim()
     {
-        particleSystem.Clear();
-        particleSystem.Stop();
+        ps.Clear();
+        ps.Stop();
     }
 }
