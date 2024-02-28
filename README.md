@@ -1,2 +1,5 @@
-CS 596 Mobile Game
--Made in a week
+# Swipe My Katamari
+- iOS game developed for CS596 in a 1 week sprint.
+
+# Demo
+![](https://github.com/krrgit/SwipeMyKatamari/blob/main/iosgamedemo.gif)
