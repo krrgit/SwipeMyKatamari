@@ -3,4 +3,4 @@
 
 # Demo
 - [Full Gameplay Demo](https://youtu.be/W8XN5zsk1Ws)
-![](https://github.com/krrgit/SwipeMyKatamari/blob/main/iosgamedemo.gif)
+- ![](https://github.com/krrgit/SwipeMyKatamari/blob/main/iosgamedemo.gif)
